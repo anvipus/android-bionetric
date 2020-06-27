@@ -1,6 +1,7 @@
 package com.an.biometric
 
-import android.hardware.biometrics.BiometricPrompt
+//import android.hardware.biometrics.BiometricPrompt
+import androidx.biometric.BiometricPrompt
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 
 interface BiometricCallback {

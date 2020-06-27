@@ -1,6 +1,7 @@
 package com.an.biometric
 
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
@@ -8,6 +9,7 @@ import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.os.CancellationSignal
+import androidx.fragment.app.FragmentActivity
 import java.io.IOException
 import java.security.*
 import java.security.cert.CertificateException
@@ -24,7 +26,7 @@ open class BiometricManagerV23 {
     private var keyGenerator: KeyGenerator? = null
     private var cryptoObject: FingerprintManagerCompat.CryptoObject? = null
     @JvmField
-    var mContext: Context? = null
+    var mContext: FragmentActivity? = null
     @JvmField
     var title: String? = null
     @JvmField

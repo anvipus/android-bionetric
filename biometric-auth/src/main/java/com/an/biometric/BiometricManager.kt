@@ -1,11 +1,15 @@
 package com.an.biometric
 
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.hardware.biometrics.BiometricPrompt
+//import android.hardware.biometrics.BiometricPrompt
+import androidx.biometric.BiometricPrompt
 import android.os.Build
 import android.os.CancellationSignal
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 
 class BiometricManager protected constructor(biometricBuilder: BiometricBuilder) : BiometricManagerV23() {
     protected var mCancellationSignal = CancellationSignal()
@@ -42,6 +46,10 @@ class BiometricManager protected constructor(biometricBuilder: BiometricBuilder)
             biometricCallback.onBiometricAuthenticationNotAvailable()
             return
         }
+        if (!BiometricUtils.isFingerprintAvailable(mContext)) {
+            biometricCallback.onBiometricAuthenticationNotAvailable()
+            return
+        }
         displayBiometricDialog(biometricCallback)
     }
 
@@ -63,17 +71,30 @@ class BiometricManager protected constructor(biometricBuilder: BiometricBuilder)
 
     @TargetApi(Build.VERSION_CODES.P)
     private fun displayBiometricPrompt(biometricCallback: BiometricCallback) {
-        BiometricPrompt.Builder(mContext)
-                .setTitle(title)
-                .setSubtitle(subtitle)
-                .setDescription(description)
-                .setNegativeButton(negativeButtonText, mContext!!.mainExecutor, DialogInterface.OnClickListener { dialogInterface, i -> biometricCallback.onAuthenticationCancelled() })
+        var executor = ContextCompat.getMainExecutor(mContext)
+//        BiometricPrompt.Builder(mContext)
+//                .setTitle(title)
+//                .setSubtitle(subtitle)
+//                .setDescription(description)
+//                .setNegativeButton(negativeButtonText, mContext!!.mainExecutor, DialogInterface.OnClickListener { dialogInterface, i -> biometricCallback.onAuthenticationCancelled() })
+//                .build()
+//                .authenticate(mCancellationSignal, mContext!!.mainExecutor,
+//                        BiometricCallbackV28(biometricCallback))
+
+        var biometricPrompt = BiometricPrompt(mContext!!,executor, BiometricCallbackV28(biometricCallback))
+        var promptInfo = BiometricPrompt.PromptInfo.Builder()
+                .setTitle(title!!)
+                .setSubtitle(subtitle!!)
+                .setDescription(description!!)
+                //.setDeviceCredentialAllowed(true)
+                .setNegativeButtonText(negativeButtonText!!)
+                //.setConfirmationRequired(true)
                 .build()
-                .authenticate(mCancellationSignal, mContext!!.mainExecutor,
-                        BiometricCallbackV28(biometricCallback))
+
+        biometricPrompt.authenticate(promptInfo)
     }
 
-    class BiometricBuilder(val context: Context) {
+    class BiometricBuilder(val context: FragmentActivity) {
         var mTitle: String? = null
         var mSubtitle: String? = null
         var mDescription: String? = null

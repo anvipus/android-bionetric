@@ -1,6 +1,7 @@
 package com.an.biometric
 
-import android.hardware.biometrics.BiometricPrompt
+//import android.hardware.biometrics.BiometricPrompt
+import androidx.biometric.BiometricPrompt
 import android.os.Build
 import androidx.annotation.RequiresApi
 
@@ -11,10 +12,10 @@ class BiometricCallbackV28(private val biometricCallback: BiometricCallback) : B
         biometricCallback.onAuthenticationSuccessfulV28(result)
     }
 
-    override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
-        super.onAuthenticationHelp(helpCode, helpString)
-        biometricCallback.onAuthenticationHelp(helpCode, helpString)
-    }
+//    override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
+//        super.onAuthenticationHelp(helpCode, helpString)
+//        biometricCallback.onAuthenticationHelp(helpCode, helpString)
+//    }
 
     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
         super.onAuthenticationError(errorCode, errString)
